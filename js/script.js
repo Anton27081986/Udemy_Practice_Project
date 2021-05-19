@@ -101,9 +101,50 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     setClock('.timer', deadLine);
+
+//---------------Modal--------------------
+
+    const modalTrigger = document.querySelectorAll('[data-modal]'),
+          modal = document.querySelector('.modal'),
+          modalCloseBtn = document.querySelector('[data-close]');
+
+    // Показываем содержимое при нажатии на триггер
+    modalTrigger.forEach (btn => {
+        btn.addEventListener('click', () => {
+            modal.classList.add('show');
+            modal.classList.remove('hide');
+            // modal.classList.toggle('show');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+    
+    function closeModal() {
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    // Скрываем содержимое при нажатии на триггер
+    modalCloseBtn.addEventListener('click', closeModal);
+        // modal.classList.toggle('show');
+        
+    
+
+    // Закрываем модальное окно нажатием в любую область вокруг
+    modal.addEventListener('click', (event) => {
+        const target = event.target;
+
+        if (target === modal) {
+            closeModal();
+        }
+    });
+
+    // Закрываем модальное окно по нажатию на Esc (проверка, что мод.окно открыто)
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Escape' && modal.classList.contains('show')) {
+            closeModal();
+        }
+    });
+
 });
-
-
-
-
 
