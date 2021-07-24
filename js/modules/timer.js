@@ -1,5 +1,5 @@
-function timer() {
-    const deadLine = '2022-06-17';
+function timer(id, deadLine) {
+    // const deadLine = '2022-06-17';
 
     function getTimeRemaining(endtime) {
         //получаем количество времени, до которого нам нужно досчитать
@@ -52,9 +52,9 @@ function timer() {
 
     }
 
-    setClock('.timer', deadLine);
+    setClock(id, deadLine);
 
 
 }
 
-module.exports = timer;
+export default timer;

@@ -1,27 +1,38 @@
-function modal() {
-    //---------------Modal--------------------
+function openModal(modalSelector, modalTimerId) {
+    const modal = document.querySelector(modalSelector);
 
-    const modalTrigger = document.querySelectorAll('[data-modal]'),
-          modal = document.querySelector('.modal');
+    modal.classList.add('show');
+    modal.classList.remove('hide');
+    // modal.classList.toggle('show');
+    document.body.style.overflow = 'hidden';
 
-    // Показываем содержимое при нажатии на триггер
-    modalTrigger.forEach (btn => {
-        btn.addEventListener('click', openModal);
-    });
-
-    function openModal() {
-        modal.classList.add('show');
-        modal.classList.remove('hide');
-        // modal.classList.toggle('show');
-        document.body.style.overflow = 'hidden';
+    console.log(modalTimerId);
+    if (modalTimerId) {
         clearInterval(modalTimerId);
     }
     
-    function closeModal() {
-        modal.classList.add('hide');
-        modal.classList.remove('show');
-        document.body.style.overflow = '';
-    }
+}
+
+function closeModal(modalSelector) {
+    const modal = document.querySelector(modalSelector);
+
+    modal.classList.add('hide');
+    modal.classList.remove('show');
+    document.body.style.overflow = '';
+}
+
+function modal(triggerSelector, modalSelector, modalTimerId) {
+    //---------------Modal--------------------
+
+    const modalTrigger = document.querySelectorAll(triggerSelector),
+          modal = document.querySelector(modalSelector);
+
+    // Показываем содержимое при нажатии на триггер
+    modalTrigger.forEach (btn => {
+        btn.addEventListener('click', () => openModal(modalSelector, modalTimerId));
+    });
+
+
 
     // Скрываем содержимое при нажатии на триггер
     
@@ -34,24 +45,21 @@ function modal() {
         const target = event.target;
 
         if (target === modal || target.getAttribute('data-close') == '') {
-            closeModal();
+            closeModal(modalSelector);
         }
     });
 
     // Закрываем модальное окно по нажатию на Esc (проверка, что мод.окно открыто)
     document.addEventListener('keydown', (event) => {
         if (event.code === 'Escape' && modal.classList.contains('show')) {
-            closeModal();
+            closeModal(modalSelector);
         }
     });
-
-    // Автоматическое открытие модального окна через заданное время
-     const modalTimerId = setTimeout(openModal, 50000);
     
     // Открытие модального окна при достижении конца страницы
     function showModalByScroll () {
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-            openModal();
+            openModal(modalSelector, modalTimerId);
             window.removeEventListener('scroll', showModalByScroll);
         }
     }
@@ -59,4 +67,7 @@ function modal() {
     window.addEventListener('scroll', showModalByScroll);
 }
 
-module.exports = modal;
+export default modal;
+export {closeModal};
+export {openModal}; 
+
